@@ -1,11 +1,12 @@
-
-import type { Event, IEventEmitter} from './types';
+import type { Event, IEventEmitter } from "./types";
 
 /**
  * Memory-based EventEmitter implementation (custom, no dependencies)
  * Can be used in any environment (browser, Node.js, Deno, etc.)
  */
-export class MemoryEventEmitter<TEvent extends Event = Event> implements IEventEmitter<TEvent> {
+export class MemoryEventEmitter<TEvent extends Event = Event>
+  implements IEventEmitter<TEvent>
+{
   private observers: Map<string, ((event: TEvent) => void)[]> = new Map();
 
   /**
@@ -14,7 +15,7 @@ export class MemoryEventEmitter<TEvent extends Event = Event> implements IEventE
   on<T extends TEvent>(type: string, handler: (event: T) => void): () => void {
     const handlers = this.observers.get(type) || [];
     const typedHandler = handler as (event: TEvent) => void;
-    
+
     if (!handlers.includes(typedHandler)) {
       handlers.push(typedHandler);
       this.observers.set(type, handlers);
@@ -40,12 +41,15 @@ export class MemoryEventEmitter<TEvent extends Event = Event> implements IEventE
   /**
    * One-time event subscription with enhanced type safety
    */
-  once<T extends TEvent>(type: string, handler: (event: T) => void): () => void {
+  once<T extends TEvent>(
+    type: string,
+    handler: (event: T) => void,
+  ): () => void {
     const wrappedHandler = (event: TEvent) => {
       handler(event as T);
       this.off(type);
     };
-    
+
     return this.on(type, wrappedHandler);
   }
 

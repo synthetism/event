@@ -1,11 +1,13 @@
-import { EventEmitter as NodeEventEmitter } from 'node:events';
-import type { Event, IEventEmitter } from './types';
+import { EventEmitter as NodeEventEmitter } from "node:events";
+import type { Event, IEventEmitter } from "./types";
 
 /**
  * Node.js native EventEmitter implementation
  * Uses Node.js built-in EventEmitter for maximum performance and compatibility
  */
-export class NodeEventEmitterImpl<TEvent extends Event = Event> implements IEventEmitter<TEvent> {
+export class NodeEventEmitterImpl<TEvent extends Event = Event>
+  implements IEventEmitter<TEvent>
+{
   private emitter: NodeEventEmitter;
 
   constructor() {
@@ -17,7 +19,7 @@ export class NodeEventEmitterImpl<TEvent extends Event = Event> implements IEven
    */
   on<T extends TEvent>(type: string, handler: (event: T) => void): () => void {
     this.emitter.on(type, handler);
-    
+
     // Return unsubscribe function
     return () => {
       this.emitter.off(type, handler);
@@ -27,9 +29,12 @@ export class NodeEventEmitterImpl<TEvent extends Event = Event> implements IEven
   /**
    * One-time event subscription with enhanced type safety
    */
-  once<T extends TEvent>(type: string, handler: (event: T) => void): () => void {
+  once<T extends TEvent>(
+    type: string,
+    handler: (event: T) => void,
+  ): () => void {
     this.emitter.once(type, handler);
-    
+
     // Return unsubscribe function (in case they want to cancel before it fires)
     return () => {
       this.emitter.off(type, handler);

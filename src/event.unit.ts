@@ -1,14 +1,19 @@
-import { type TeachingContract, Unit, createUnitSchema, type UnitProps } from '@synet/unit';
-import type { Event, IEventEmitter } from './types';
-import { MemoryEventEmitter } from './memory-event-emitter';
-import { NodeEventEmitterImpl } from './node-event-emitter';
+import {
+  type TeachingContract,
+  Unit,
+  type UnitProps,
+  createUnitSchema,
+} from "@synet/unit";
+import { MemoryEventEmitter } from "./memory-event-emitter";
+import { NodeEventEmitterImpl } from "./node-event-emitter";
+import type { Event, IEventEmitter } from "./types";
 
 /**
  * Configuration for EventUnit creation
  */
 export interface EventUnitConfig {
   id?: string;
-  provider?: 'memory' | 'node';
+  provider?: "memory" | "node";
   metadata?: Record<string, unknown>;
 }
 
@@ -16,7 +21,7 @@ export interface EventUnitConfig {
  * Props for EventUnit (internal state)
  */
 export interface EventUnitProps extends UnitProps {
-  provider: 'memory' | 'node';
+  provider: "memory" | "node";
   [x: string]: unknown;
 }
 
@@ -24,12 +29,15 @@ export interface EventUnitProps extends UnitProps {
  * EventUnit - Unit Architecture wrapper for event capabilities
  * Provides consciousness-based event handling that can be taught to other Units
  */
-export class EventEmitter<TEvent extends Event = Event> extends Unit<EventUnitProps> implements IEventEmitter<TEvent> {
+export class EventEmitter<TEvent extends Event = Event>
+  extends Unit<EventUnitProps>
+  implements IEventEmitter<TEvent>
+{
   private backend: IEventEmitter<TEvent>;
 
   protected constructor(props: EventUnitProps) {
     super(props);
-    
+
     // Initialize backend based on provider
     this.backend = this.createBackend();
   }
@@ -37,14 +45,16 @@ export class EventEmitter<TEvent extends Event = Event> extends Unit<EventUnitPr
   /**
    * Factory method for creating EventUnit instances
    */
-  static create<T extends Event = Event>(config: EventUnitConfig = {}): EventEmitter<T> {
+  static create<T extends Event = Event>(
+    config: EventUnitConfig = {},
+  ): EventEmitter<T> {
     const props: EventUnitProps = {
       dna: createUnitSchema({
-        id: config.id || 'event-unit',
-        version: '1.0.0'
+        id: config.id || "event-unit",
+        version: "1.0.0",
       }),
-      provider: config.provider || 'memory',
-      metadata: config.metadata || {}
+      provider: config.provider || "memory",
+      metadata: config.metadata || {},
     };
 
     return new EventEmitter<T>(props);
@@ -52,7 +62,7 @@ export class EventEmitter<TEvent extends Event = Event> extends Unit<EventUnitPr
 
   private createBackend(): IEventEmitter<TEvent> {
     switch (this.props.provider) {
-      case 'node':
+      case "node":
         return new NodeEventEmitterImpl<TEvent>();
       default:
         return new MemoryEventEmitter<TEvent>();
@@ -75,7 +85,10 @@ export class EventEmitter<TEvent extends Event = Event> extends Unit<EventUnitPr
     return this.backend.on(type, handler);
   }
 
-  once<T extends TEvent>(type: string, handler: (event: T) => void): () => void {
+  once<T extends TEvent>(
+    type: string,
+    handler: (event: T) => void,
+  ): () => void {
     return this.backend.once(type, handler);
   }
 
@@ -101,7 +114,7 @@ export class EventEmitter<TEvent extends Event = Event> extends Unit<EventUnitPr
 
   /**
    * Teach event capabilities to other Units
-   * 
+   *
    * NOTE: Generic type constraints are lost through teaching.
    * Learned units get runtime type safety, not compile-time generics.
    * This is a limitation of the current Unit Architecture.
@@ -136,8 +149,8 @@ export class EventEmitter<TEvent extends Event = Event> extends Unit<EventUnitPr
         },
         eventTypes: (...args: unknown[]) => {
           return this.eventTypes();
-        }
-      }
+        },
+      },
     };
   }
 
@@ -149,7 +162,7 @@ export class EventEmitter<TEvent extends Event = Event> extends Unit<EventUnitPr
 EventUnit [${this.dna.id}] v${this.dna.version}
 
 Provider: ${this.props.provider}
-Event Types: ${this.eventTypes().length > 0 ? this.eventTypes().join(', ') : 'none'}
+Event Types: ${this.eventTypes().length > 0 ? this.eventTypes().join(", ") : "none"}
 
 Capabilities:
 • event.on(type, handler) - Subscribe to events

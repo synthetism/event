@@ -1,7 +1,7 @@
-import type { Event } from './types';
-import { MemoryEventEmitter } from './memory-event-emitter';
-import { NodeEventEmitterImpl } from './node-event-emitter';
-import { EventEmitter } from './event.unit';
+import { EventEmitter } from "./event.unit";
+import { MemoryEventEmitter } from "./memory-event-emitter";
+import { NodeEventEmitterImpl } from "./node-event-emitter";
+import type { Event } from "./types";
 
 /**
  * Event provider factory - following the FS pattern
@@ -24,7 +24,7 @@ export const Emitter = {
    * Unit Architecture wrapper with configurable backend
    * Can be taught to other Units, provides consciousness-based events
    */
-  unit: <T extends Event = Event>(config?: { provider?: 'memory' | 'node' }) =>
+  unit: <T extends Event = Event>(config?: { provider?: "memory" | "node" }) =>
     EventEmitter.create<T>(config),
 } as const;
 
@@ -32,4 +32,3 @@ export const Emitter = {
  * Alternative naming for convenience
  * EventEmitter.memory() / EventEmitter.node() / EventEmitter.unit()
  */
-

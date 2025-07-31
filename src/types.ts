@@ -4,7 +4,6 @@
  * with additional properties as needed.
  */
 
-
 export interface Event {
   type: string;
 }
@@ -15,7 +14,6 @@ export interface Event {
 export interface EventObserver<T extends Event> {
   update(event: T): void;
 }
-
 
 /**
  * Interface for event emitters - provider-agnostic contract

@@ -3,9 +3,9 @@
     "target": "ES2020",
     "module": "NodeNext",        // Changed from "commonjs"
     "moduleResolution": "NodeNext", // Added this line
-    "lib": ["ES2020", "DOM"],
+    "lib": ["ES2020"],
     "outDir": "./dist",
-    "rootDir": "exploration",
+    "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -14,6 +14,6 @@
     "preserveSymlinks": true,
     "declaration": true
   },
-  "include": ["exploration/**/*"],
-  "exclude": ["node_modules", "dist", "test", "**/*.test.ts", "units/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*.test.ts"]
 }

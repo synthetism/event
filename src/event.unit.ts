@@ -1,4 +1,4 @@
-import { Unit, createUnitSchema, type UnitProps } from '@synet/unit';
+import { type TeachingContract, Unit, createUnitSchema, type UnitProps } from '@synet/unit';
 import type { Event, IEventEmitter } from './types';
 import { MemoryEventEmitter } from './memory-event-emitter';
 import { NodeEventEmitterImpl } from './node-event-emitter';
@@ -24,7 +24,7 @@ export interface EventUnitProps extends UnitProps {
  * EventUnit - Unit Architecture wrapper for event capabilities
  * Provides consciousness-based event handling that can be taught to other Units
  */
-export class EventUnit<TEvent extends Event = Event> extends Unit<EventUnitProps> implements IEventEmitter<TEvent> {
+export class EventEmitter<TEvent extends Event = Event> extends Unit<EventUnitProps> implements IEventEmitter<TEvent> {
   private backend: IEventEmitter<TEvent>;
 
   protected constructor(props: EventUnitProps) {
@@ -37,7 +37,7 @@ export class EventUnit<TEvent extends Event = Event> extends Unit<EventUnitProps
   /**
    * Factory method for creating EventUnit instances
    */
-  static create<T extends Event = Event>(config: EventUnitConfig = {}): EventUnit<T> {
+  static create<T extends Event = Event>(config: EventUnitConfig = {}): EventEmitter<T> {
     const props: EventUnitProps = {
       dna: createUnitSchema({
         id: config.id || 'event-unit',
@@ -47,7 +47,7 @@ export class EventUnit<TEvent extends Event = Event> extends Unit<EventUnitProps
       metadata: config.metadata || {}
     };
 
-    return new EventUnit<T>(props);
+    return new EventEmitter<T>(props);
   }
 
   private createBackend(): IEventEmitter<TEvent> {
@@ -101,18 +101,42 @@ export class EventUnit<TEvent extends Event = Event> extends Unit<EventUnitProps
 
   /**
    * Teach event capabilities to other Units
+   * 
+   * NOTE: Generic type constraints are lost through teaching.
+   * Learned units get runtime type safety, not compile-time generics.
+   * This is a limitation of the current Unit Architecture.
    */
-  teach() {
+  teach(): TeachingContract {
     return {
       unitId: this.dna.id,
       capabilities: {
-        'event.on': this.on.bind(this),
-        'event.once': this.once.bind(this),
-        'event.off': this.off.bind(this),
-        'event.emit': this.emit.bind(this),
-        'event.removeAllListeners': this.removeAllListeners.bind(this),
-        'event.listenerCount': this.listenerCount.bind(this),
-        'event.eventTypes': this.eventTypes.bind(this)
+        // Runtime type safety only - generics lost in teaching
+        on: (...args: unknown[]) => {
+          const [type, handler] = args as [string, (event: Event) => void];
+          return this.on(type, handler);
+        },
+        once: (...args: unknown[]) => {
+          const [type, handler] = args as [string, (event: Event) => void];
+          return this.once(type, handler);
+        },
+        off: (...args: unknown[]) => {
+          const [type] = args as [string];
+          return this.off(type);
+        },
+        emit: (...args: unknown[]) => {
+          const [event] = args as [TEvent];
+          return this.emit(event);
+        },
+        removeAllListeners: (...args: unknown[]) => {
+          return this.removeAllListeners();
+        },
+        listenerCount: (...args: unknown[]) => {
+          const [type] = args as [string];
+          return this.listenerCount(type);
+        },
+        eventTypes: (...args: unknown[]) => {
+          return this.eventTypes();
+        }
       }
     };
   }

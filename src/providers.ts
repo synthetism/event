@@ -1,13 +1,13 @@
 import type { Event } from './types';
 import { MemoryEventEmitter } from './memory-event-emitter';
 import { NodeEventEmitterImpl } from './node-event-emitter';
-import { EventUnit } from './event-unit-new';
+import { EventEmitter } from './event.unit';
 
 /**
  * Event provider factory - following the FS pattern
  * Provides different EventEmitter backends for different environments
  */
-export const EventProvider = {
+export const Emitter = {
   /**
    * Memory-based EventEmitter (custom implementation, zero dependencies)
    * Works in any environment: Node.js, browser, Deno, Cloudflare Workers
@@ -25,11 +25,11 @@ export const EventProvider = {
    * Can be taught to other Units, provides consciousness-based events
    */
   unit: <T extends Event = Event>(config?: { provider?: 'memory' | 'node' }) =>
-    EventUnit.create<T>(config),
+    EventEmitter.create<T>(config),
 } as const;
 
 /**
  * Alternative naming for convenience
  * EventEmitter.memory() / EventEmitter.node() / EventEmitter.unit()
  */
-export const EventEmitter = EventProvider;
+

@@ -19,8 +19,8 @@ export { MemoryEventEmitter } from './memory-event-emitter';
 export { NodeEventEmitterImpl } from './node-event-emitter';
 
 // Unit Architecture
-export { EventUnit } from './event-unit-new';
-export type { EventUnitConfig, EventUnitProps } from './event-unit-new';
+export { EventEmitter } from './event.unit';
+export type { EventUnitConfig, EventUnitProps } from './event.unit';
 
 // Provider factory (FS pattern)
-export { EventProvider, EventEmitter } from './providers';
+export { Emitter } from './providers';

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { NodeEventEmitterImpl } from '../src/node-event-emitter';
+import { NodeEventEmitterImpl } from '../src/providers/node';
 import type { Event } from '../src/types';
 
 // Test event interfaces

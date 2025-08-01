@@ -1,5 +1,5 @@
 import { EventEmitter as NodeEventEmitter } from "node:events";
-import type { Event, IEventEmitter } from "./types";
+import type { Event, IEventEmitter } from "../types";
 
 /**
  * Node.js native EventEmitter implementation

@@ -1,6 +1,6 @@
 import { EventEmitter } from "./event.unit";
-import { MemoryEventEmitter } from "./memory-event-emitter";
-import { NodeEventEmitterImpl } from "./node-event-emitter";
+import { MemoryEventEmitter } from "./providers/memory";
+import { NodeEventEmitterImpl } from "./providers/node";
 import type { Event } from "./types";
 
 /**

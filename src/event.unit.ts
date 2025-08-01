@@ -4,8 +4,8 @@ import {
   type UnitProps,
   createUnitSchema,
 } from "@synet/unit";
-import { MemoryEventEmitter } from "./memory-event-emitter";
-import { NodeEventEmitterImpl } from "./node-event-emitter";
+import { MemoryEventEmitter } from "./providers/memory";
+import { NodeEventEmitterImpl } from "./providers/node";
 import type { Event, IEventEmitter } from "./types";
 
 /**

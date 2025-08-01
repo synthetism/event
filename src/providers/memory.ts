@@ -1,4 +1,4 @@
-import type { Event, IEventEmitter } from "./types";
+import type { Event, IEventEmitter } from "../types";
 
 /**
  * Memory-based EventEmitter implementation (custom, no dependencies)

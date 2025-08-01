@@ -1,7 +1,7 @@
 {
   "name": "@synet/event",
   "version": "1.0.0",
-  "description": "",
+  "description": "Consciousness-based event architecture for SYNET Units. Events that Units can teach and learn.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "private": false,
